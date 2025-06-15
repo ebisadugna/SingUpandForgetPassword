@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor settings
+.vscode/
+.idea/
+.DS_Store
+
+# OS files
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dependency lock files (optional, if you use only one)
+# Uncomment one and ignore the others depending on your package manager
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Coverage reports
+coverage/
+
+# Next.js (if used)
+.next/
+
+# Optional: ignore local dev database or uploads
+*.sqlite
+uploads/
