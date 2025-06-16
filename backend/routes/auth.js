@@ -7,6 +7,14 @@ const { validateGoogleOAuthConfig, getGoogleOAuthUrls } = require("../config/goo
 
 const router = express.Router()
 
+const {
+  forgotPassword,
+  resetPassword,
+  verifyResetPassword,
+} = require("../controllers/authController");
+
+
+
 // Validate Google OAuth config on startup
 if (!validateGoogleOAuthConfig()) {
   console.error("⚠️  Google OAuth will not work without proper configuration")
@@ -283,5 +291,9 @@ router.get("/me", auth, async (req, res) => {
 router.post("/logout", auth, (req, res) => {
   res.json({ message: "Logged out successfully" })
 })
+
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
+router.post("/verify-reset-code", verifyResetPassword);
 
 module.exports = router

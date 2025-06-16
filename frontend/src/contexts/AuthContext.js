@@ -11,6 +11,7 @@ const AuthContext = createContext(null)
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
+  console.log("useAuth context:", context)
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider")
   }
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }) => {
   // Set up axios defaults and interceptors
   useEffect(() => {
     const token = localStorage.getItem("token")
+    console.log("AuthProvider token:", token)
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
     }
@@ -174,69 +176,99 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // const forgotPassword = async (email) => {
+  //   try {
+  //     setError(null)
+  //     setLoading(true)
+  //     console.log("Sending password reset email to:", email)
+
+  //     await sendPasswordResetEmail(auth, email, {
+  //       url: `${window.location.origin}/login`,
+  //       handleCodeInApp: false,
+  //     })
+
+  //     console.log("Password reset email sent successfully")
+  //     return { success: true, message: "Password reset email sent successfully" }
+  //   } catch (error) {
+  //     console.error("Forgot password error:", error)
+  //     const errorMessage = getFirebaseErrorMessage(error.code)
+  //     setError(errorMessage)
+  //     throw new Error(errorMessage)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
   const forgotPassword = async (email) => {
     try {
+      const response = axios.post('http://localhost:5000/api/auth/forgot-password', { email })
+      console.log("Password reset email sent successfully", response.data);
+      return response.data; // If no error thrown, status was 2xx
+    } catch (error) {
+      const message = error.response?.data?.message || error.message || "Failed to send reset email";
+      throw new Error(message);
+    }
+  }
+
+
+  const resetPassword = async (token, newPassword) => {
+    try {
       setError(null)
       setLoading(true)
-      console.log("Sending password reset email to:", email)
+      console.log("Resetting password with backend token:", token)
 
-      await sendPasswordResetEmail(auth, email, {
-        url: `${window.location.origin}/login`,
-        handleCodeInApp: false,
+      const response = await axios.post(`http://localhost:5000/api/auth/reset-password/${token}`, {
+        newPassword,
       })
 
-      console.log("Password reset email sent successfully")
-      return { success: true, message: "Password reset email sent successfully" }
+      toast.success(response.data.message || "Password reset successful")
+      return { success: true }
     } catch (error) {
-      console.error("Forgot password error:", error)
-      const errorMessage = getFirebaseErrorMessage(error.code)
-      setError(errorMessage)
-      throw new Error(errorMessage)
+      console.error("Backend reset password error:", error)
+      const message = error.response?.data?.message || "Password reset failed"
+      setError(message)
+      toast.error(message)
+      return { success: false, message }
     } finally {
       setLoading(false)
     }
   }
 
-  const resetPassword = async (oobCode, newPassword) => {
+  // const verifyResetCode = async (oobCode) => {
+  //   try {
+  //     setError(null)
+  //     console.log("Verifying reset code:", oobCode)
+
+  //     const email = await verifyPasswordResetCode(auth, oobCode)
+  //     console.log("Reset code verified for email:", email)
+
+  //     return { success: true, email }
+  //   } catch (error) {
+  //     console.error("Verify reset code error:", error)
+  //     const errorMessage = getFirebaseErrorMessage(error.code)
+  //     setError(errorMessage)
+  //     throw new Error(errorMessage)
+  //   }
+  // }
+
+  const verifyResetCode = async (token) => {
     try {
-      setError(null)
-      setLoading(true)
-      console.log("Resetting password with code:", oobCode)
+      const response = await axios.post("http://localhost:5000/api/auth/verify-reset-code", {
+        token, // ✅ matches backend
+      });
 
-      // Verify the password reset code first
-      await verifyPasswordResetCode(auth, oobCode)
-
-      // Reset the password
-      await confirmPasswordReset(auth, oobCode, newPassword)
-
-      console.log("Password reset successful")
-      return { success: true, message: "Password reset successful" }
-    } catch (error) {
-      console.error("Reset password error:", error)
-      const errorMessage = getFirebaseErrorMessage(error.code)
-      setError(errorMessage)
-      throw new Error(errorMessage)
-    } finally {
-      setLoading(false)
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error("Invalid or expired reset token");
+      }
+    } catch (err) {
+      const message = err.response?.data?.message || "Invalid reset link";
+      throw new Error(message);
     }
-  }
+  };
 
-  const verifyResetCode = async (oobCode) => {
-    try {
-      setError(null)
-      console.log("Verifying reset code:", oobCode)
 
-      const email = await verifyPasswordResetCode(auth, oobCode)
-      console.log("Reset code verified for email:", email)
-
-      return { success: true, email }
-    } catch (error) {
-      console.error("Verify reset code error:", error)
-      const errorMessage = getFirebaseErrorMessage(error.code)
-      setError(errorMessage)
-      throw new Error(errorMessage)
-    }
-  }
 
   // Helper function to get user-friendly error messages
   const getFirebaseErrorMessage = (errorCode) => {

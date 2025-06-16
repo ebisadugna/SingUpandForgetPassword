@@ -30,6 +30,7 @@ const ForgotPassword = () => {
       setErrors({ email: "Email is required" })
       return
     }
+    console.log("Validating email:", validateEmail(email))
 
     if (!validateEmail(email)) {
       setErrors({ email: "Please enter a valid email address" })
