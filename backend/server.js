@@ -7,6 +7,8 @@ require("dotenv").config()
 // Import routes
 const authRoutes = require("./routes/auth")
 const userRoutes = require("./routes/users")
+const taskRoutes = require("./routes/tasks")
+const responseRoutes = require("./routes/responses")
 
 const app = express()
 
@@ -30,6 +32,9 @@ mongoose
 // Routes
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
+app.use("/uploads", express.static(require("path").join(__dirname, "uploads")))
+app.use("/api/tasks", taskRoutes)
+app.use("/api/responses", responseRoutes)
 
 
 // Health check

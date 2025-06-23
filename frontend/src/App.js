@@ -12,6 +12,8 @@ import AuthCallback from "./pages/AuthCallback"
 import ForgotPassword from "./pages/ForgotPassword"
 import ResetPassword from "./pages/ResetPassword"
 import Sidebar from "./components/layout/Sidebar"
+import UploadTask from "./pages/UploadTask"
+import UserResponses from "./pages/UserResponses"
 import "./index.css"
 
 // Create AppContent component that uses AuthProvider
@@ -49,6 +51,30 @@ const AppContent = () => {
                     element={
                       <ProtectedRoute adminOnly>
                         <AdminDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/upload-task"
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <UploadTask />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/responses"
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <UserResponses />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/responses"
+                    element={
+                      <ProtectedRoute>
+                        <UserResponses />
                       </ProtectedRoute>
                     }
                   />

@@ -12,12 +12,14 @@ const Sidebar = () => {
   const navLinks = [
     { to: "/dashboard", label: "Dashboard", icon: <Home className="h-5 w-5" /> },
     { to: "/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
-  ]
-
-  const adminLinks = [
-    { to: "/admin", label: "Admin Panel", icon: <Shield className="h-5 w-5" /> },
     { to: "/admin/upload-task", label: "Upload Task Image", icon: <Upload className="h-5 w-5" /> },
     { to: "/admin/responses", label: "User Responses", icon: <ListChecks className="h-5 w-5" /> },
+  ]
+
+  const userLinks = [
+    { to: "/dashboard", label: "Dashboard", icon: <Home className="h-5 w-5" /> },
+    { to: "/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
+    { to: "/responses", label: "Responses", icon: <ListChecks className="h-5 w-5" /> },
   ]
 
   const responseStatuses = [
@@ -36,7 +38,7 @@ const Sidebar = () => {
       </div>
       <nav className="flex-1">
         <ul className="space-y-2">
-          {navLinks.map((link) => (
+          {(isAdmin ? navLinks : userLinks).map((link) => (
             <li key={link.to}>
               <Link
                 to={link.to}
@@ -52,7 +54,7 @@ const Sidebar = () => {
           <>
             <div className="mt-10 mb-3 text-xs font-bold text-white uppercase tracking-widest opacity-70">Admin Controls</div>
             <ul className="space-y-2">
-              {adminLinks.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.to}>
                   <Link
                     to={link.to}
