@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext"
 import { Mail, Lock, Eye, EyeOff } from "lucide-react"
 import toast from "react-hot-toast"
 
+
 const GoogleSignInButton = ({ onClick, loading }) => (
   <button
     type="button"
@@ -66,28 +67,22 @@ const Login = () => {
     }
   }, [searchParams])
 
-  // Clear errors when user types
-  useEffect(() => {
-    if (error) {
-      setError(null)
-    }
-  }, [formData, error, setError])
-
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />
   }
 
   const handleChange = (e) => {
+    if (error) setError(null);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
+    });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    await login(formData.email, formData.password)
+    await login(formData.email, formData.password, setError)
     setLoading(false)
   }
 
@@ -110,8 +105,7 @@ const Login = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-md border border-gray-200 p-8">
-          {error && <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">{error}</div>}
-
+    
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -131,6 +125,7 @@ const Login = () => {
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleChange}
+                  error={!!error}
                 />
               </div>
             </div>
@@ -153,6 +148,7 @@ const Login = () => {
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
+                  error={!!error}
                 />
                 <button
                   type="button"
@@ -167,6 +163,15 @@ const Login = () => {
                 </button>
               </div>
             </div>
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                {error === "User Not Found" || error === "User not found" || error === "User with this email does not exist"
+                  ? "User email is not correct"
+                  : error === "Invalid credentials"
+                  ? "Password is not correct"
+                  : error}
+              </div>
+            )}
 
             <div className="flex items-center justify-end">
               <div className="text-sm">

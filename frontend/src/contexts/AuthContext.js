@@ -81,12 +81,12 @@ export const AuthProvider = ({ children }) => {
     checkAuth()
   }, [])
 
-  const login = async (email, password) => {
+  const login = async (email, password,setError) => {
     try {
       setError(null)
       setLoading(true)
 
-      const response = await axios.post("/api/auth/login", { email, password })
+      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password })
       const { token, user } = response.data
 
       localStorage.setItem("token", token)
@@ -103,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       const message = error.response?.data?.message || "Login failed"
       setError(message)
-      toast.error(message)
+      // toast.error(message)
       return { success: false, message }
     } finally {
       setLoading(false)

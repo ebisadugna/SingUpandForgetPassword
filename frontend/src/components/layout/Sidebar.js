@@ -3,16 +3,15 @@ import { useAuth } from "../../contexts/AuthContext"
 import { Home, User, Shield, Upload, ListChecks, LogOut, Image, CheckCircle, XCircle, Clock } from "lucide-react"
 
 const Sidebar = () => {
-  const { currentUser, logout, isAuthenticated } = useAuth()
+  const { user, isAdmin, logout, isAuthenticated } = useAuth()
   const location = useLocation()
-  const isAdmin = currentUser?.role === "admin"
 
   if (!isAuthenticated) return null
 
   const navLinks = [
     { to: "/dashboard", label: "Dashboard", icon: <Home className="h-5 w-5" /> },
     { to: "/profile", label: "Profile", icon: <User className="h-5 w-5" /> },
-    { to: "/admin/upload-task", label: "Upload Task Image", icon: <Upload className="h-5 w-5" /> },
+    ...(isAdmin ? [{ to: "/admin/upload-task", label: "Upload Task Image", icon: <Upload className="h-5 w-5" /> }] : []),
     { to: "/admin/responses", label: "User Responses", icon: <ListChecks className="h-5 w-5" /> },
   ]
 
@@ -50,7 +49,7 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-        {isAdmin && (
+        {/* {isAdmin && (
           <>
             <div className="mt-10 mb-3 text-xs font-bold text-white uppercase tracking-widest opacity-70">Admin Controls</div>
             <ul className="space-y-2">
@@ -75,8 +74,8 @@ const Sidebar = () => {
                 </li>
               ))}
             </ul>
-          </>
-        )}
+          </> */}
+        {/* )} */}
       </nav>
       <div className="mt-auto pt-8 border-t border-white border-opacity-10">
         <button
