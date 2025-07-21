@@ -8,7 +8,7 @@ services:
     rootDir: backend
     branch: main # Or your deployment branch
     buildCommand: "npm install"
-    startCommand: "node server.js"
+    startCommand: "npm start"
     envVars:
       - key: MONGO_URI
         fromDatabase:
