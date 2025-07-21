@@ -13,9 +13,21 @@ const responseRoutes = require("./routes/responses")
 const app = express()
 
 // Middleware
+const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:3000")
+  .split(",")
+  .map((url) => url.trim())
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true)
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = "The CORS policy for this site does not allow access from the specified Origin."
+        return callback(new Error(msg), false)
+      }
+      return callback(null, true)
+    },
     credentials: true,
   }),
 )
@@ -25,7 +37,7 @@ app.use(cookieParser())
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/auth-app")
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.error("❌ MongoDB connection error:", err))
 
@@ -57,8 +69,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`)
-  console.log(`📍 Google OAuth callback URL: http://localhost:${PORT}/api/auth/google/callback`)
-  console.log(`🌐 Client URL: ${process.env.CLIENT_URL || "http://localhost:3000"}`)
+  console.log(`🌐 Allowed client URLs: ${allowedOrigins.join(", ")}`)
 
   // Validate environment
   if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {

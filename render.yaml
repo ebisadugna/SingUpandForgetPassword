@@ -1,0 +1,54 @@
+services:
+  # Backend - Web Service
+  - type: web
+    name: auth-backend
+    runtime: node
+    plan: free
+    repo: https://github.com/hiteshchoudhary/full-stack-auth-app # Change this to your repository URL
+    rootDir: backend
+    branch: main # Or your deployment branch
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    envVars:
+      - key: MONGO_URI
+        fromDatabase:
+          name: auth-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true # Or set your own secret
+      - key: GOOGLE_CLIENT_ID
+        sync: false # Set this in the Render dashboard
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false # Set this in the Render dashboard
+      - key: CLIENT_URL
+        fromService:
+          type: static
+          name: auth-frontend
+          property: url
+      - key: NODE_ENV
+        value: production
+
+  # Frontend - Static Site
+  - type: static
+    name: auth-frontend
+    plan: free
+    repo: https://github.com/hiteshchoudhary/full-stack-auth-app # Change this to your repository URL
+    rootDir: frontend
+    branch: main # Or your deployment branch
+    buildCommand: "npm install && npm run build"
+    publishDir: build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: auth-backend
+          property: url
+      - key: GENERATE_SOURCEMAP
+        value: false
+
+databases:
+  # MongoDB - Free tier
+  - name: auth-db
+    plan: free
+    databaseName: auth-app # Optional, Render will generate one
+    ipAllowList: [] # Allow access from anywhere 
