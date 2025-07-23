@@ -189,17 +189,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-          <div className="flex items-center">
-            <div className="p-3 bg-purple-100 rounded-lg">
-              <Shield className="h-6 w-6 text-purple-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Status</p>
-              <p className="text-lg font-semibold text-green-600">Active</p>
-            </div>
-          </div>
-        </div>
+        {/* Removed duplicate status card */}
       </div>
 
       {/* User's Responses Table */}
@@ -242,59 +232,6 @@ const Dashboard = () => {
                     </td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-
-      {/* All Tasks and User's Response for Each (Table) */}
-      <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold mb-4">Tasks and Your Responses</h2>
-        {tasks.length === 0 ? (
-          <div className="text-gray-500">No tasks uploaded yet.</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-semibold">Image Name</th>
-                  <th className="text-left py-3 px-4 font-semibold">Your Response</th>
-                  <th className="text-left py-3 px-4 font-semibold">Status</th>
-                  <th className="text-left py-3 px-4 font-semibold">Submitted Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((task) => {
-                  const myResponse = responses.find(r => r.task && r.task._id === task._id);
-                  return (
-                    <tr key={task._id} className="border-b hover:bg-gray-50">
-                      <td className="py-3 px-4">
-                        <div className="flex items-center">
-                          <img
-                            src={task.imageUrl}
-                            alt={task.originalName}
-                            className="h-12 w-12 object-cover rounded mr-3"
-                          />
-                          <span className="font-medium">{task.originalName || "Unknown"}</span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4">{myResponse ? myResponse.response : <span className="text-gray-500">No response submitted yet.</span>}</td>
-                      <td className="py-3 px-4">
-                        {myResponse ? (
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-semibold ${statusColors[myResponse.status] || "bg-gray-100 text-gray-800"}`}>
-                            {myResponse.status}
-                          </span>
-                        ) : (
-                          <span className="text-gray-500">-</span>
-                        )}
-                      </td>
-                      <td className="py-3 px-4 text-sm text-gray-600">
-                        {myResponse ? new Date(myResponse.createdAt).toLocaleDateString() : "-"}
-                      </td>
-                    </tr>
-                  );
-                })}
               </tbody>
             </table>
           </div>

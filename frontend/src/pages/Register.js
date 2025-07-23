@@ -132,19 +132,30 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{" "}
-            <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
-              sign in to your existing account
-            </Link>
-          </p>
+    <div
+      className="fixed inset-0 min-h-screen min-w-full flex items-center justify-center"
+      style={{
+        backgroundImage: 'url(/login_page_logo.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-0" />
+      <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-md">
+        {/* Logo at the top */}
+        <div className="flex flex-col items-center mb-4">
+          <img
+            src="/login_page_logo.png"
+            alt="Logo"
+            className="h-20 w-20 rounded-full shadow-lg border-4 border-white bg-white object-cover mb-2"
+            style={{ objectFit: 'cover' }}
+          />
+          <h2 className="mt-2 text-center text-3xl font-extrabold text-white drop-shadow-lg">Create your account</h2>
         </div>
-
-        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-8">
+        {/* Registration form and card as before, inside a blurred/white card */}
+        <div className="bg-white bg-opacity-90 rounded-2xl shadow-2xl border border-gray-200 p-8 backdrop-blur-md w-full">
           {error && <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">{error}</div>}
 
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -283,6 +294,11 @@ const Register = () => {
 
             <GoogleSignInButton onClick={handleGoogleSignUp} loading={loading} />
           </form>
+        </div>
+        {/* Add link to login page */}
+        <div className="mt-4 text-center">
+          <span className="text-gray-600">Already have an account? </span>
+          <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">Sign in</Link>
         </div>
       </div>
     </div>

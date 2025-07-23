@@ -34,6 +34,7 @@ const UserResponses = () => {
       ]);
       setTasks(tasksRes.data.tasks || []);
       setResponses(responsesRes.data.responses || []);
+      console.log("respnse",tasksRes.data.tasks);
     } catch (err) {
       setError("Failed to fetch data.");
     } finally {
@@ -43,7 +44,9 @@ const UserResponses = () => {
 
   // For non-admins, filter to only their responses
   const myResponses = responses.filter((resp) => resp.user && user && resp.user._id === user._id);
+  console.log("myResponses",myResponses)
   const myResponsesByTask = Object.fromEntries(myResponses.map(r => [r.task?._id, r]));
+  console.log("id",myResponsesByTask)
 
   const handleStatusChange = async (id, newStatus) => {
     setStatusUpdating((prev) => ({ ...prev, [id]: true }));
