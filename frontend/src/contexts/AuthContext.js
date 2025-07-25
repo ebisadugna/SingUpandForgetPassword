@@ -145,7 +145,14 @@ export const AuthProvider = ({ children }) => {
       setLoading(true)
 
       // Redirect to Google OAuth
-      const googleAuthUrl = `${process.env.REACT_APP_API_URL}/api/auth/google`
+      let googleAuthUrl = "";
+      if (axios.defaults.baseURL) {
+        googleAuthUrl = axios.defaults.baseURL + "/api/auth/google";
+      } else if (process.env.REACT_APP_API_URL) {
+        googleAuthUrl = process.env.REACT_APP_API_URL + "/api/auth/google";
+      } else {
+        googleAuthUrl = "http://localhost:5000/api/auth/google";
+      }
       window.location.href = googleAuthUrl
     } catch (error) {
       const message = "Google sign-in failed"
