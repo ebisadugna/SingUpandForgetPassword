@@ -1,5 +1,3 @@
-"use client"
-
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/auth-context"
 import { LogOut, User, Shield, Home } from "lucide-react"
