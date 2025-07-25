@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import axios from "axios"
+// import axios from "axios"
+import axios from "../config/axios"
 import toast from "react-hot-toast"
 import { sendPasswordResetEmail, confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth"
 import { auth } from "../config/firebase" // Declare the auth variable here
