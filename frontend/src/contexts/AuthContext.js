@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
       setError(null)
       setLoading(true)
 
-      const response = await axios.post({path}||"http://localhost:5000/api/auth/login", { email, password })
+      const response = await axios.post("/api/auth/login", { email, password })
       const { token, user } = response.data
 
       localStorage.setItem("token", token)
@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
       setError(null)
       setLoading(true)
 
-      const response = await axios.post({path}||"http://localhost:5000/api/auth/register", { name, email, password })
+      const response = await axios.post("/api/auth/register", { name, email, password })
       const { token, user } = response.data
 
       localStorage.setItem("token", token)
@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true)
 
       // Redirect to Google OAuth
-      const googleAuthUrl = {path}|| `http://localhost:5000/api/auth/google`
+      const googleAuthUrl = `/api/auth/google`
       window.location.href = googleAuthUrl
     } catch (error) {
       const message = "Google sign-in failed"
@@ -160,7 +160,7 @@ export const AuthProvider = ({ children }) => {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
       // Fetch user data
-      const response = await axios.get({path}||"http://localhost:5000/api/auth/me")
+      const response = await axios.get("/api/auth/me")
       setUser(response.data.user)
       const user = response.data.user
 
@@ -201,7 +201,7 @@ export const AuthProvider = ({ children }) => {
 
   const forgotPassword = async (email) => {
     try {
-      const response = axios.post({path}||'http://localhost:5000/api/auth/forgot-password', { email })
+      const response = axios.post('/api/auth/forgot-password', { email })
       console.log("Password reset email sent successfully", response.data);
       return response.data; // If no error thrown, status was 2xx
     } catch (error) {
@@ -217,7 +217,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true)
       console.log("Resetting password with backend token:", token)
 
-      const response = await axios.post({path}||`http://localhost:5000/api/auth/reset-password/${token}`, {
+      const response = await axios.post(`/api/auth/reset-password/${token}`, {
         newPassword,
       })
 
@@ -253,7 +253,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyResetCode = async (token) => {
     try {
-      const response = await axios.post({path}||"http://localhost:5000/api/auth/verify-reset-code", {
+      const response = await axios.post("/api/auth/verify-reset-code", {
         token, // ✅ matches backend
       });
 
