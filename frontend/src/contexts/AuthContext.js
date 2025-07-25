@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true)
 
       // Redirect to Google OAuth
-      const googleAuthUrl = `/api/auth/google`
+      const googleAuthUrl = `${process.env.REACT_APP_API_URL}/api/auth/google`
       window.location.href = googleAuthUrl
     } catch (error) {
       const message = "Google sign-in failed"
