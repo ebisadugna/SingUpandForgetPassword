@@ -139,20 +139,18 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const loginWithGoogle = async () => {
-    try {
-      setError(null)
-      setLoading(true)
-
-      // Redirect to Google OAuth
-      const googleAuthUrl = await axios.get(`/api/auth/google`)
-      window.location.href = googleAuthUrl
-    } catch (error) {
-      const message = "Google sign-in failed"
-      setError(message)
-      toast.error(message)
-      setLoading(false)
+  const loginWithGoogle = () => {
+    setError(null)
+    setLoading(true)
+    let googleAuthUrl = ""
+    if (axios.defaults.baseURL) {
+      googleAuthUrl = axios.defaults.baseURL + "/api/auth/google"
+    } else if (process.env.REACT_APP_API_URL) {
+      googleAuthUrl = process.env.REACT_APP_API_URL + "/api/auth/google"
+    } else {
+      googleAuthUrl = "http://localhost:5000/api/auth/google"
     }
+    window.location.href = googleAuthUrl
   }
 
   const loginWithToken = async (token) => {
