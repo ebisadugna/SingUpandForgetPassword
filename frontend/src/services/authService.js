@@ -1,4 +1,5 @@
-import axios from "axios"
+// import axios from "axios"
+import axios from "../config/axios"
 
 class AuthService {
   constructor() {
