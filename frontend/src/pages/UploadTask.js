@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../config/axios";
 import { useAuth } from "../contexts/AuthContext";
 
 const UploadTask = () => {
@@ -43,7 +44,7 @@ const UploadTask = () => {
     const formData = new FormData();
     formData.append("image", file);
     try {
-      await axios.post("http://localhost:5000/api/tasks/upload", formData, {
+      await axios.post("/api/tasks/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setMessage("Image uploaded successfully!");

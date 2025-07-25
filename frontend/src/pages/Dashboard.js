@@ -1,8 +1,7 @@
-"use client"
-
 import { useAuth } from "../contexts/AuthContext"
 import { User, Mail, Shield, Calendar } from "lucide-react"
-import axios from "axios"
+// import axios from "axios"
+import axios from "../config/axios"
 import { useEffect, useState } from "react"
 
 const statusColors = {

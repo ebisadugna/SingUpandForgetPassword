@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../config/axios";
 import { useAuth } from "../contexts/AuthContext";
 
 const statusColors = {
@@ -27,10 +28,10 @@ const UserResponses = () => {
     setError("");
     try {
       const [tasksRes, responsesRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/tasks"),
+        axios.get("/api/tasks"),
         isAdmin
-          ? axios.get("http://localhost:5000/api/responses")
-          : axios.get("http://localhost:5000/api/responses/my"),
+          ? axios.get("/api/responses")
+          : axios.get("/api/responses/my"),
       ]);
       setTasks(tasksRes.data.tasks || []);
       setResponses(responsesRes.data.responses || []);

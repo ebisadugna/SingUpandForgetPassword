@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { Lock, Eye, EyeOff, CheckCircle, XCircle } from "lucide-react"
 import toast from "react-hot-toast"
-import axios from "axios"
+// import axios from "axios"
+import axios from "../config/axios"
 
 const ResetPassword = () => {
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ const ResetPassword = () => {
       }
 
       try {
-        const res = await axios.post("http://localhost:5000/api/auth/verify-reset-code", { token })
+        const res = await axios.post("/api/auth/verify-reset-code", { token })
         setEmail(res.data.email)
         setValidToken(true)
       } catch (error) {
@@ -63,7 +64,7 @@ const ResetPassword = () => {
 
     setLoading(true)
     try {
-      await axios.post(`http://localhost:5000/api/auth/reset-password/${token}`, {
+      await axios.post(`/api/auth/reset-password/${token}`, {
         newPassword: formData.password,
       })
 

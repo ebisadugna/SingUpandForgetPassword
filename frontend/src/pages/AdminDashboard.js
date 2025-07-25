@@ -1,7 +1,6 @@
-"use client"
-
 import { useState, useEffect } from "react"
-import axios from "axios"
+// import axios from "axios"
+import axios from "../config/axios"
 import toast from "react-hot-toast"
 import { Users, Shield, UserCheck, UserX, Trash2 } from "lucide-react"
 
