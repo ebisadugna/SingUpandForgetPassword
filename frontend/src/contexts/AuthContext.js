@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }) => {
       setError(null)
       setLoading(true)
 
-      const response = await axios.post("/api/auth/register", { name, email, password })
+      const response = await axios.post("http://localhost:5000/api/auth/register", { name, email, password })
       const { token, user } = response.data
 
       localStorage.setItem("token", token)
